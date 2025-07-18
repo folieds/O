@@ -1,12 +1,18 @@
 import string
 import random
 import requests
-from termcolor import cprint
 import time
 import os
 import webbrowser
 
-# 🔐 Fixed Telegram Bot Token and Channel
+# ✅ cprint fallback if termcolor not installed
+try:
+    from termcolor import cprint
+except:
+    def cprint(text, color=None, attrs=None):
+        print(text)
+
+# 🔐 Telegram bot config
 BOT_TOKEN = "7903387054:AAFDPEvHUA7-JLJKhNAQ_SIrd5ISV2UWHco"
 CHANNEL_USERNAME = "@PythonBotz"
 CHANNEL_LINK = "https://t.me/PythonBotz"
@@ -18,11 +24,13 @@ def send_to_telegram(chat_id, message):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     payload = {"chat_id": chat_id, "text": message}
     try:
-        requests.post(url, data=payload, timeout=5)
-    except:
-        pass
+        r = requests.post(url, data=payload, timeout=5)
+        if not r.ok:
+            print("⚠️ Telegram Error:", r.text)
+    except Exception as e:
+        print("❌ Telegram Exception:", e)
 
-# 🔍 Check if user is in channel
+# 🔍 Check if user is in the channel
 def is_user_in_channel(user_id):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/getChatMember"
     params = {"chat_id": CHANNEL_USERNAME, "user_id": user_id}
@@ -49,30 +57,34 @@ def is_username_available(username):
     except:
         return False
 
-# 🔁 Live log print
+# 🔁 Print live log
 def print_live_log(available, used, total):
-    os.system('cls' if os.name == 'nt' else 'clear')  # Clear terminal
+    os.system('cls' if os.name == 'nt' else 'clear')
     cprint("🚀 Reddit 4L Finder Tool Started", "magenta", attrs=["bold"])
-    cprint(f"🟢 Available : {available}  ", "green", attrs=["bold"])
-    cprint(f"🔴 Used     : {used}  ", "red", attrs=["bold"])
-    cprint(f"🔍 Checked  : {total}  ", "cyan", attrs=["bold"])
-    cprint(f"\n👉 Join Channel ➤ {CHANNEL_USERNAME}  ", "yellow", attrs=["underline"])
+    cprint(f"🟢 Available : {available}", "green", attrs=["bold"])
+    cprint(f"🔴 Used     : {used}", "red", attrs=["bold"])
+    cprint(f"🔍 Checked  : {total}", "cyan", attrs=["bold"])
+    cprint(f"\n👉 Join Channel ➤ {CHANNEL_USERNAME}", "yellow", attrs=["underline"])
 
-# 🚀 Start Tool
+# 🚀 Start tool
 def start_tool():
     cprint("🔗 Join our official channel for updates:", "cyan", attrs=["bold"])
-    cprint(f"👉 {CHANNEL_USERNAME} ", "yellow", attrs=["underline"])
+    cprint(f"👉 {CHANNEL_LINK}", "yellow", attrs=["underline"])
     try:
         webbrowser.open(CHANNEL_LINK)
     except:
         pass
 
-    cprint("\n💬 Enter your Telegram User ID:", "cyan")
-    user_id = input(">> ")
+    cprint("\n💬 Enter your Telegram User ID (numeric):", "cyan")
+    try:
+        user_id = int(input(">> ").strip())
+    except ValueError:
+        cprint("❌ Invalid Telegram User ID!", "red")
+        return
 
     if not is_user_in_channel(user_id):
         cprint("🚫 You are not subscribed to the required channel!", "red", attrs=["bold"])
-        cprint(f"👉 Please join: {CHANNEL_USERNAME}", "yellow", attrs=["bold", "underline"])
+        cprint(f"👉 Please join: {CHANNEL_LINK}", "yellow", attrs=["bold", "underline"])
         return
 
     cprint("🔢 How many usernames to check?", "green")
@@ -96,15 +108,17 @@ def start_tool():
             available += 1
             msg = f"✅ {uname} is AVAILABLE \n\nFound: {available}, \nChecked: {checked}"
             send_to_telegram(user_id, msg)
+            with open("available_usernames.txt", "a") as f:
+                f.write(uname + "\n")
         else:
             used += 1
 
         print_live_log(available, used, checked)
-        time.sleep(0.15)
+        time.sleep(0.25)
 
-    final_msg = f"\n🎯 DONE!\n✔️ Found: {available}  \n🔍 Checked: {checked}  "
+    final_msg = f"\n🎯 DONE!\n✔️ Found: {available}  \n🔍 Checked: {checked}"
     send_to_telegram(user_id, final_msg)
     cprint(final_msg, "green", attrs=["bold"])
 
-# ▶️ Run tool
+# ▶️ Run
 start_tool()
