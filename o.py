@@ -61,10 +61,10 @@ def is_username_available(username):
 def print_live_log(available, used, total):
     os.system('cls' if os.name == 'nt' else 'clear')
     cprint("🚀 Reddit 4L Finder Tool Started", "magenta", attrs=["bold"])
-    cprint(f"🟢 Available : {available}", "green", attrs=["bold"])
-    cprint(f"🔴 Used     : {used}", "red", attrs=["bold"])
-    cprint(f"🔍 Checked  : {total}", "cyan", attrs=["bold"])
-    cprint(f"\n👉 Join Channel ➤ {CHANNEL_USERNAME}", "yellow", attrs=["underline"])
+    cprint(f"🟢 Available : {available} ", "green", attrs=["bold"])
+    cprint(f"🔴 Used     : {used} ", "red", attrs=["bold"])
+    cprint(f"🔍 Checked  : {total} ", "cyan", attrs=["bold"])
+    cprint(f"\n👉 Join Channel ➤ {CHANNEL_USERNAME} ", "yellow", attrs=["underline"])
 
 # 🚀 Start tool
 def start_tool():
@@ -84,7 +84,7 @@ def start_tool():
 
     if not is_user_in_channel(user_id):
         cprint("🚫 You are not subscribed to the required channel!", "red", attrs=["bold"])
-        cprint(f"👉 Please join: {CHANNEL_LINK}", "yellow", attrs=["bold", "underline"])
+        cprint(f"👉 Please join: {CHANNEL_LINK} ", "yellow", attrs=["bold", "underline"])
         return
 
     cprint("🔢 How many usernames to check?", "green")
