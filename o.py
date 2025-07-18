@@ -5,13 +5,6 @@ import time
 import os
 import webbrowser
 
-# ✅ cprint fallback if termcolor not installed
-try:
-    from termcolor import cprint
-except:
-    def cprint(text, color=None, attrs=None):
-        print(text)
-
 # 🔐 Telegram bot config
 BOT_TOKEN = "7903387054:AAFDPEvHUA7-JLJKhNAQ_SIrd5ISV2UWHco"
 CHANNEL_USERNAME = "@PythonBotz"
@@ -60,38 +53,38 @@ def is_username_available(username):
 # 🔁 Print live log
 def print_live_log(available, used, total):
     os.system('cls' if os.name == 'nt' else 'clear')
-    cprint("🚀 Reddit 4L Finder Tool Started", "magenta", attrs=["bold"])
-    cprint(f"🟢 Available : {available} ", "green", attrs=["bold"])
-    cprint(f"🔴 Used     : {used} ", "red", attrs=["bold"])
-    cprint(f"🔍 Checked  : {total} ", "cyan", attrs=["bold"])
-    cprint(f"\n👉 Join Channel ➤ {CHANNEL_USERNAME} ", "yellow", attrs=["underline"])
+    print("🚀 Reddit 4L Finder Tool Started")
+    print(f"🟢 Available : {available}")
+    print(f"🔴 Used     : {used}")
+    print(f"🔍 Checked  : {total}")
+    print(f"\n👉 Join Channel ➤ {CHANNEL_USERNAME}")
 
 # 🚀 Start tool
 def start_tool():
-    cprint("🔗 Join our official channel for updates:", "cyan", attrs=["bold"])
-    cprint(f"👉 {CHANNEL_LINK}", "yellow", attrs=["underline"])
+    print("🔗 Join our official channel for updates:")
+    print(f"👉 {CHANNEL_LINK}")
     try:
         webbrowser.open(CHANNEL_LINK)
     except:
         pass
 
-    cprint("\n💬 Enter your Telegram User ID (numeric):", "cyan")
+    print("\n💬 Enter your Telegram User ID (numeric):")
     try:
         user_id = int(input(">> ").strip())
     except ValueError:
-        cprint("❌ Invalid Telegram User ID!", "red")
+        print("❌ Invalid Telegram User ID!")
         return
 
     if not is_user_in_channel(user_id):
-        cprint("🚫 You are not subscribed to the required channel!", "red", attrs=["bold"])
-        cprint(f"👉 Please join: {CHANNEL_LINK} ", "yellow", attrs=["bold", "underline"])
+        print("🚫 You are not subscribed to the required channel!")
+        print(f"👉 Please join: {CHANNEL_LINK}")
         return
 
-    cprint("🔢 How many usernames to check?", "green")
+    print("🔢 How many usernames to check?")
     try:
         target = int(input(">> "))
     except:
-        cprint("❌ Invalid number!", "red")
+        print("❌ Invalid number!")
         return
 
     available = 0
@@ -118,7 +111,7 @@ def start_tool():
 
     final_msg = f"\n🎯 DONE!\n✔️ Found: {available}  \n🔍 Checked: {checked}"
     send_to_telegram(user_id, final_msg)
-    cprint(final_msg, "green", attrs=["bold"])
+    print(final_msg)
 
 # ▶️ Run
 start_tool()
