@@ -106,7 +106,7 @@ def start_tool():
 
         if is_username_available(uname):
             available += 1
-            msg = f"✅ New Hit AVAILABLE @\nUsername > {uname}\n\nFound: {available}, \nChecked: {checked}"
+            msg = f"🎯 New Hit {available}\n\nUsername > {uname} ✅"
             send_to_telegram(user_id, msg)
             with open("available_usernames.txt", "a") as f:
                 f.write(uname + "\n")
