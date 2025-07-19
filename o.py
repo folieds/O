@@ -64,7 +64,7 @@ def print_live_log(available, used, total):
     cprint(f"🟢 Available : {available}      ", "green", attrs=["bold"])
     cprint(f"🔴 Used     : {used}       ", "red", attrs=["bold"])
     cprint(f"🔍 Checked  : {total}      ", "cyan", attrs=["bold"])
-    cprint(f"\n👉 Join Channel ➤ {CHANNEL_USERNAME}      ", "yellow", attrs=["reverse"])
+    cprint(f"\n\n👉 Join Channel ➤ {CHANNEL_USERNAME}      ", "blue", attrs=["bold", "reverse"])
 
 # 🚀 Start tool
 def start_tool():
